@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="单例模式" />
+    <meta name="author" content="qiubinhua" />
+    <title>单例模式</title>
+  </head>
+  <body>
+    <button id="btn">bth1</button>
+    <script>
+      const Modal = (function () {
+        let instance = null;
+        return function (html) {
+          if (!instance) {
+            console.log("instance", instance);
+            instance = new CreateModal(html);
+          }
+          return instance;
+        };
+      })();
+
+      class CreateModal {
+        constructor(html) {
+          this.html = html;
+          this.div = null;
+          this.create();
+        }
+        create() {
+          this.div = document.createElement("div");
+          this.div.innerHTML = this.html;
+          const style = {
+            position: "fixed",
+            left: "50%",
+            top: "300px",
+            display: "none",
+            padding: "100px",
+            width: 350,
+            height: 300,
+            background: "skyblue",
+            transition: "translate:(-50%, 0)",
+          };
+          this.setStyle(this.div, style);
+          document.body.appendChild(this.div);
+        }
+        setStyle(ele, css) {
+          for (const atr in css) ele.style[atr] = css[atr];
+        }
+        show() {
+          this.div.style.display = "block";
+        }
+        hide() {
+          this.div.style.display = "none";
+        }
+      }
+
+      const modal1 = new Modal("hello world");
+      console.log(
+        "%c [ modal1 ]-62",
+        "font-size:13px; background:pink; color:#bf2c9f;",
+        modal1
+      );
+      const modal2 = new Modal("second modal");
+      console.log(
+        "%c [ modal2 ]-68",
+        "font-size:13px; background:pink; color:#bf2c9f;",
+        modal2
+      );
+      console.log(modal1 === modal2);
+
+      const btn = document.getElementById("btn");
+      btn.onclick = function () {
+        const modal = new Modal("hello world");
+        modal.show();
+        console.log("modal", modal);
+      };
+    </script>
+  </body>
+</html>
